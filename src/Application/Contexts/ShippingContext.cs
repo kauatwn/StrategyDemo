@@ -9,7 +9,7 @@ namespace Application.Contexts;
 public class ShippingContext(IShippingStrategyFactory factory) : IShippingContext
 {
     private IShippingStrategyFactory Factory { get; } = factory;
-    public IShippingStrategy Strategy { get; private set; } = null!;
+    public IShippingStrategy? Strategy { get; private set; }
 
     public void SetStrategy(ShippingMethod method)
     {
@@ -18,6 +18,11 @@ public class ShippingContext(IShippingStrategyFactory factory) : IShippingContex
 
     public double CalculateShippingCost(Order order)
     {
+        if (Strategy is null)
+        {
+            throw new InvalidOperationException($"No shipping strategy found for method '{order.ShippingMethod}'.");
+        }
+
         return Strategy.Calculate(order);
     }
 }
