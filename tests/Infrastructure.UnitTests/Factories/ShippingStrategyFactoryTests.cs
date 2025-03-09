@@ -22,17 +22,17 @@ public class ShippingStrategyFactoryTests
     public void ShouldCreateShippingStrategyWhenValidShippingMethodIsProvided(ShippingMethod method)
     {
         // Arrange
-        var mockStrategy = Mock.Of<IShippingStrategy>();
+        var expected = Mock.Of<IShippingStrategy>();
 
         MockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
-            .Returns(mockStrategy);
+            .Returns(expected);
 
         // Act
         IShippingStrategy? result = Factory.Create(method);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Same(mockStrategy, result);
+        Assert.Same(expected, result);
 
         MockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
     }
