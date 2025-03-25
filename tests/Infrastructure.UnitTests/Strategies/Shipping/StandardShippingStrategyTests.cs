@@ -15,7 +15,7 @@ public class StandardShippingStrategyTests
     public void ShouldCalculateShippingCostBasedOnWeightAndDistance()
     {
         // Arrange
-        var order = new Order(10, 100, ShippingMethod.Standard);
+        var order = new Order(weight: 10, distance: 100, method: ShippingMethod.Express);
         double expected = order.Weight * CostPerKg + order.Distance * CostPerKm;
 
         // Act

@@ -20,7 +20,7 @@ public class CalculateShippingCostUseCaseTests
     public void ShouldCalculateShippingCost()
     {
         // Arrange
-        var order = new Order(10, 100, ShippingMethod.Standard);
+        var order = new Order(weight: 10, distance: 100, method: ShippingMethod.Standard);
 
         MockContext.Setup(c => c.SetStrategy(It.IsAny<ShippingMethod>()));
         MockContext.Setup(c => c.CalculateShippingCost(It.IsAny<Order>()));
