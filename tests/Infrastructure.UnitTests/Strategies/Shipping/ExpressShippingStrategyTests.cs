@@ -15,7 +15,7 @@ public class ExpressShippingStrategyTests
     public void ShouldCalculateShippingCostBasedOnWeightAndDistance()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, method: ShippingMethod.Express);
+        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Express);
         double expected = order.Weight * CostPerKg + order.Distance * CostPerKm;
 
         // Act

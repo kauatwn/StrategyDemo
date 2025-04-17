@@ -57,7 +57,7 @@ public class ShippingContextTests
     public void ShouldCalculateShippingCostWhenStrategyIsSet()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, method: ShippingMethod.Standard);
+        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         MockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns(MockStrategy.Object);
         MockStrategy.Setup(s => s.Calculate(It.IsAny<Order>()));
@@ -76,7 +76,7 @@ public class ShippingContextTests
     public void ShouldThrowInvalidOperationExceptionWhenStrategyIsNotSet()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, method: ShippingMethod.Standard);
+        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
         var message = $"No shipping strategy found for method '{order.ShippingMethod}'.";
 
         // Act
