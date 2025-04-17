@@ -19,7 +19,6 @@ Strategy_Demo/
 │   │   │   └── ShippingCostResponse.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
-│   ├── CrossCutting/
 │   ├── Domain/                       # Entidades e interfaces core
 │   └── Infrastructure/               # Implementações concretas
 │       ├── Factories/
