@@ -8,12 +8,11 @@ namespace Application.Contexts;
 
 public class ShippingContext(IShippingStrategyFactory factory) : IShippingContext
 {
-    private readonly IShippingStrategyFactory _factory = factory;
     private IShippingStrategy? _strategy;
 
     public void SetStrategy(ShippingMethod method)
     {
-        _strategy = _factory.Create(method)
+        _strategy = factory.Create(method)
             ?? throw new InvalidOperationException($"No shipping strategy found for method '{method}'.");
     }
 
