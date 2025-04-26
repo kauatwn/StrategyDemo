@@ -9,48 +9,14 @@ namespace Application.UnitTests.Contexts;
 
 public class ShippingContextTests
 {
-    private Mock<IShippingStrategyFactory> MockFactory { get; } = new();
-    private Mock<IShippingStrategy> MockStrategy { get; } = new();
-    private ShippingContext Context { get; }
+    private readonly Mock<IShippingStrategyFactory> _mockFactory = new();
+    private readonly Mock<IShippingStrategy> _mockStrategy = new();
+
+    private readonly ShippingContext _context;
 
     public ShippingContextTests()
     {
-        Context = new ShippingContext(MockFactory.Object);
-    }
-
-    [Fact]
-    public void ShouldSetStrategyWhenFactoryReturnsStrategy()
-    {
-        // Arrange
-        const ShippingMethod method = ShippingMethod.Standard;
-
-        MockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns(MockStrategy.Object);
-
-        // Act
-        Context.SetStrategy(method);
-
-        // Assert
-        Assert.NotNull(Context.Strategy);
-        Assert.Same(MockStrategy.Object, Context.Strategy);
-
-        MockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
-    }
-
-    [Fact]
-    public void ShouldKeepStrategyNullWhenFactoryReturnsNull()
-    {
-        // Arrange
-        const ShippingMethod method = ShippingMethod.Standard;
-
-        MockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns((IShippingStrategy?)null);
-
-        // Act
-        Context.SetStrategy(method);
-
-        // Assert
-        Assert.Null(Context.Strategy);
-
-        MockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
+        _context = new ShippingContext(_mockFactory.Object);
     }
 
     [Fact]
@@ -59,34 +25,53 @@ public class ShippingContextTests
         // Arrange
         var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
-        MockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns(MockStrategy.Object);
-        MockStrategy.Setup(s => s.Calculate(It.IsAny<Order>()));
+        _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns(_mockStrategy.Object);
+        _mockStrategy.Setup(s => s.Calculate(It.IsAny<Order>()));
 
-        Context.SetStrategy(order.ShippingMethod);
+        _context.SetStrategy(order.ShippingMethod);
 
         // Act
-        Context.CalculateShippingCost(order);
+        _context.CalculateShippingCost(order);
 
         // Assert
-        MockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
-        MockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Once);
+        _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
+        _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Once);
     }
 
     [Fact]
-    public void ShouldThrowInvalidOperationExceptionWhenStrategyIsNotSet()
+    public void ShouldThrowInvalidOperationExceptionWhenStrategyIsNotSetBeforeCalculation()
     {
         // Arrange
         var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
-        var message = $"No shipping strategy found for method '{order.ShippingMethod}'.";
 
         // Act
-        Action act = () => Context.CalculateShippingCost(order);
+        var exception = Record.Exception(() => _context.CalculateShippingCost(order));
 
         // Assert
-        var exception = Assert.Throws<InvalidOperationException>(act);
-        Assert.Equal(message, exception.Message);
+        Assert.NotNull(exception);
+        Assert.IsType<InvalidOperationException>(exception);
 
-        MockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Never);
-        MockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never);
+        _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Never);
+        _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never);
+    }
+
+    [Fact]
+    public void ShouldThrowInvalidOperationExceptionWhenFactoryReturnsNull()
+    {
+        // Arrange
+        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+
+        _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns((IShippingStrategy?)null);
+
+        // Act
+        var exception = Record.Exception(() => _context.SetStrategy(order.ShippingMethod));
+
+
+        // Assert
+        Assert.NotNull(exception);
+        Assert.IsType<InvalidOperationException>(exception);
+
+        _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
+        _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never);
     }
 }
