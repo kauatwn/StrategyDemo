@@ -45,7 +45,7 @@ public class ShippingContextTests
         var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         // Act
-        var exception = Record.Exception(() => _context.CalculateShippingCost(order));
+        Exception? exception = Record.Exception(() => _context.CalculateShippingCost(order));
 
         // Assert
         Assert.NotNull(exception);
@@ -64,8 +64,7 @@ public class ShippingContextTests
         _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns((IShippingStrategy?)null);
 
         // Act
-        var exception = Record.Exception(() => _context.SetStrategy(order.ShippingMethod));
-
+        Exception? exception = Record.Exception(() => _context.SetStrategy(order.ShippingMethod));
 
         // Assert
         Assert.NotNull(exception);
