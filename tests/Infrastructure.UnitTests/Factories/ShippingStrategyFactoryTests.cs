@@ -8,12 +8,12 @@ namespace Infrastructure.UnitTests.Factories;
 
 public class ShippingStrategyFactoryTests
 {
-    private Mock<IKeyedServiceProvider> MockServiceProvider { get; } = new();
-    private ShippingStrategyFactory Factory { get; }
+    private readonly Mock<IKeyedServiceProvider> _mockServiceProvider = new();
+    private readonly ShippingStrategyFactory _factory;
 
     public ShippingStrategyFactoryTests()
     {
-        Factory = new ShippingStrategyFactory(MockServiceProvider.Object);
+        _factory = new ShippingStrategyFactory(_mockServiceProvider.Object);
     }
 
     [Theory]
@@ -24,17 +24,17 @@ public class ShippingStrategyFactoryTests
         // Arrange
         var expected = Mock.Of<IShippingStrategy>();
 
-        MockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
+        _mockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
             .Returns(expected);
 
         // Act
-        IShippingStrategy? result = Factory.Create(method);
+        IShippingStrategy? result = _factory.Create(method);
 
         // Assert
         Assert.NotNull(result);
         Assert.Same(expected, result);
 
-        MockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
+        _mockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
     }
 
     [Fact]
@@ -43,15 +43,15 @@ public class ShippingStrategyFactoryTests
         // Arrange
         const ShippingMethod method = (ShippingMethod)int.MaxValue;
 
-        MockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
+        _mockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
             .Returns((IShippingStrategy?)null);
 
         // Act
-        IShippingStrategy? result = Factory.Create(method);
+        IShippingStrategy? result = _factory.Create(method);
 
         // Assert
         Assert.Null(result);
 
-        MockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
+        _mockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
     }
 }

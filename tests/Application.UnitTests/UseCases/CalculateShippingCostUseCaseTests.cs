@@ -8,12 +8,12 @@ namespace Application.UnitTests.UseCases;
 
 public class CalculateShippingCostUseCaseTests
 {
-    private Mock<IShippingContext> MockContext { get; } = new();
-    private CalculateShippingCostUseCase UseCase { get; }
+    private readonly Mock<IShippingContext> _mockContext = new();
+    private readonly CalculateShippingCostUseCase _useCase;
 
     public CalculateShippingCostUseCaseTests()
     {
-        UseCase = new CalculateShippingCostUseCase(MockContext.Object);
+        _useCase = new CalculateShippingCostUseCase(_mockContext.Object);
     }
 
     [Fact]
@@ -22,14 +22,14 @@ public class CalculateShippingCostUseCaseTests
         // Arrange
         var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
-        MockContext.Setup(c => c.SetStrategy(It.IsAny<ShippingMethod>()));
-        MockContext.Setup(c => c.CalculateShippingCost(It.IsAny<Order>()));
+        _mockContext.Setup(c => c.SetStrategy(It.IsAny<ShippingMethod>()));
+        _mockContext.Setup(c => c.CalculateShippingCost(It.IsAny<Order>()));
 
         // Act
-        UseCase.Execute(order);
+        _useCase.Execute(order);
 
         // Assert
-        MockContext.Verify(c => c.SetStrategy(It.IsAny<ShippingMethod>()), Times.Once);
-        MockContext.Verify(c => c.CalculateShippingCost(It.IsAny<Order>()), Times.Once);
+        _mockContext.Verify(c => c.SetStrategy(It.IsAny<ShippingMethod>()), Times.Once);
+        _mockContext.Verify(c => c.CalculateShippingCost(It.IsAny<Order>()), Times.Once);
     }
 }

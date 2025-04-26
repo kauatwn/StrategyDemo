@@ -7,10 +7,10 @@ namespace Infrastructure.Factories;
 
 public class ShippingStrategyFactory(IServiceProvider serviceProvider) : IShippingStrategyFactory
 {
-    private IServiceProvider ServiceProvider { get; } = serviceProvider;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public IShippingStrategy? Create(ShippingMethod method)
     {
-        return ServiceProvider.GetKeyedService<IShippingStrategy>(method);
+        return _serviceProvider.GetKeyedService<IShippingStrategy>(method);
     }
 }

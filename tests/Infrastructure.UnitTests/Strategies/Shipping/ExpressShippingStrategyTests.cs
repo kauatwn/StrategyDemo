@@ -9,7 +9,7 @@ public class ExpressShippingStrategyTests
     private const double CostPerKg = 2.0;
     private const double CostPerKm = 1.0;
 
-    private ExpressShippingStrategy Strategy { get; } = new();
+    private readonly ExpressShippingStrategy _strategy = new();
 
     [Fact]
     public void ShouldCalculateShippingCostBasedOnWeightAndDistance()
@@ -19,7 +19,7 @@ public class ExpressShippingStrategyTests
         double expected = order.Weight * CostPerKg + order.Distance * CostPerKm;
 
         // Act
-        double result = Strategy.Calculate(order);
+        double result = _strategy.Calculate(order);
 
         // Assert
         Assert.Equal(expected, result);
