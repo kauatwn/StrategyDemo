@@ -45,11 +45,10 @@ public class ShippingContextTests
         var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         // Act
-        Exception? exception = Record.Exception(() => _context.CalculateShippingCost(order));
+        Action act = () => _context.CalculateShippingCost(order);
 
         // Assert
-        Assert.NotNull(exception);
-        Assert.IsType<InvalidOperationException>(exception);
+        Assert.Throws<InvalidOperationException>(act);
 
         _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Never);
         _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never);
@@ -64,11 +63,10 @@ public class ShippingContextTests
         _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns((IShippingStrategy?)null);
 
         // Act
-        Exception? exception = Record.Exception(() => _context.SetStrategy(order.ShippingMethod));
+        Action act = () => _context.SetStrategy(order.ShippingMethod);
 
         // Assert
-        Assert.NotNull(exception);
-        Assert.IsType<InvalidOperationException>(exception);
+        Assert.Throws<InvalidOperationException>(act);
 
         _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Once);
         _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never);
