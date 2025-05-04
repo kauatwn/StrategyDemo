@@ -32,8 +32,8 @@ Strategy_Demo/
 │               ├── ExpressShippingStrategy.cs
 │               └── StandardShippingStrategy.cs
 └── tests/
-    ├── Application.UnitTests/
-    └── Infrastructure.UnitTests/
+    ├── Application.Tests/
+    └── Infrastructure.Tests/
 ```
 
 ## Como Funciona
