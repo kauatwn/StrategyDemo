@@ -5,7 +5,7 @@ using Domain.Interfaces.Factories;
 using Domain.Interfaces.Strategies;
 using Moq;
 
-namespace Application.UnitTests.Contexts;
+namespace Application.Tests.Unit.Contexts;
 
 public class ShippingContextTests
 {

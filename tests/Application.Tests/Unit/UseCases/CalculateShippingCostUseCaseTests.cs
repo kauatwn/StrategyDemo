@@ -4,7 +4,7 @@ using Domain.Entities;
 using Domain.Enums;
 using Moq;
 
-namespace Application.UnitTests.UseCases;
+namespace Application.Tests.Unit.UseCases;
 
 public class CalculateShippingCostUseCaseTests
 {

@@ -4,7 +4,7 @@ using Infrastructure.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-namespace Infrastructure.UnitTests.Factories;
+namespace Infrastructure.Tests.Unit.Factories;
 
 public class ShippingStrategyFactoryTests
 {

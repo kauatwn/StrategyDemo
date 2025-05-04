@@ -2,14 +2,14 @@
 using Domain.Enums;
 using Infrastructure.Strategies.Shipping;
 
-namespace Infrastructure.UnitTests.Strategies.Shipping;
+namespace Infrastructure.Tests.Unit.Strategies.Shipping;
 
-public class StandardShippingStrategyTests
+public class ExpressShippingStrategyTests
 {
-    private const double CostPerKg = 1.0;
-    private const double CostPerKm = 0.5;
+    private const double CostPerKg = 2.0;
+    private const double CostPerKm = 1.0;
 
-    private readonly StandardShippingStrategy _strategy = new();
+    private readonly ExpressShippingStrategy _strategy = new();
 
     [Fact]
     public void ShouldCalculateShippingCostBasedOnWeightAndDistance()
