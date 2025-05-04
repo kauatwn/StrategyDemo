@@ -11,25 +11,29 @@ Strategy_Demo/
 ├── src/
 │   ├── API/
 │   │   └── Controllers/
-│   │       └── OrdersController.cs   # Endpoint da API
-│   ├── Application/                  # Casos de uso e regras de negócio
+│   │       └── OrdersControllers/
+│   ├── Application/
 │   │   ├── Contexts/
-│   │   │   └── ShippingContext.cs    # Contexto do Strategy
+│   │   │   └── ShippingContext.cs
 │   │   ├── DTOs/
 │   │   │   └── ShippingCostResponse.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
-│   ├── Domain/                       # Entidades e interfaces core
-│   └── Infrastructure/               # Implementações concretas
+│   ├── Domain/
+│   │   ├── Entities/
+│   │   │   └── Order.cs
+│   │   └── Enums/
+│   │       └── ShippingMethod.cs
+│   └── Infrastructure/
 │       ├── Factories/
-│       │   └── ShippingStrategyFactory.cs  # Factory das estratégias
+│       │   └── ShippingStrategyFactory.cs
 │       └── Strategies/
 │           └── Shipping/
 │               ├── ExpressShippingStrategy.cs
 │               └── StandardShippingStrategy.cs
 └── tests/
-    ├── Application.UnitTests/        # Testes dos casos de uso
-    └── Infrastructure.UnitTests/     # Testes das estratégias e factory
+    ├── Application.UnitTests/
+    └── Infrastructure.UnitTests/
 ```
 
 ## Como Funciona
