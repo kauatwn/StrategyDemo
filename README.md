@@ -11,7 +11,7 @@ Strategy_Demo/
 ├── src/
 │   ├── API/
 │   │   └── Controllers/
-│   │       └── OrdersControllers/
+│   │       └── OrdersControllers.cs
 │   ├── Application/
 │   │   ├── Contexts/
 │   │   │   └── ShippingContext.cs
