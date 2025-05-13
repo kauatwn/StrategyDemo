@@ -19,9 +19,7 @@ public class ShippingContext(IShippingStrategyFactory factory) : IShippingContex
     public double CalculateShippingCost(Order order)
     {
         if (_strategy is null)
-        {
             throw new InvalidOperationException("Shipping strategy not set. Call SetStrategy first.");
-        }
 
         return _strategy.Calculate(order);
     }

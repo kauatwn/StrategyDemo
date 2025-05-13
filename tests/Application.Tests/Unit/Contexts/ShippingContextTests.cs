@@ -14,16 +14,13 @@ public class ShippingContextTests
 
     private readonly ShippingContext _context;
 
-    public ShippingContextTests()
-    {
-        _context = new ShippingContext(_mockFactory.Object);
-    }
+    public ShippingContextTests() => _context = new ShippingContext(_mockFactory.Object);
 
     [Fact]
     public void ShouldCalculateShippingCostWhenStrategyIsSet()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+        Order order = new(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns(_mockStrategy.Object);
         _mockStrategy.Setup(s => s.Calculate(It.IsAny<Order>()));
@@ -42,7 +39,7 @@ public class ShippingContextTests
     public void ShouldThrowInvalidOperationExceptionWhenStrategyIsNotSetBeforeCalculation()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+        Order order = new(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         // Act
         Action act = () => _context.CalculateShippingCost(order);
@@ -58,7 +55,7 @@ public class ShippingContextTests
     public void ShouldThrowInvalidOperationExceptionWhenFactoryReturnsNull()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+        Order order = new(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         _mockFactory.Setup(f => f.Create(It.IsAny<ShippingMethod>())).Returns((IShippingStrategy?)null);
 

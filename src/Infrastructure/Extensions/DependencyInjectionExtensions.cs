@@ -9,12 +9,10 @@ namespace Infrastructure.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static void AddInfrastructure(this IServiceCollection services)
     {
         AddStrategies(services);
         AddFactories(services);
-
-        return services;
     }
 
     private static void AddStrategies(IServiceCollection services)
@@ -23,8 +21,6 @@ public static class DependencyInjectionExtensions
         services.AddKeyedTransient<IShippingStrategy, ExpressShippingStrategy>(ShippingMethod.Express);
     }
 
-    private static void AddFactories(IServiceCollection services)
-    {
+    private static void AddFactories(IServiceCollection services) =>
         services.AddSingleton<IShippingStrategyFactory, ShippingStrategyFactory>();
-    }
 }

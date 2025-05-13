@@ -7,8 +7,6 @@ namespace Infrastructure.Factories;
 
 public class ShippingStrategyFactory(IServiceProvider serviceProvider) : IShippingStrategyFactory
 {
-    public IShippingStrategy? Create(ShippingMethod method)
-    {
-        return serviceProvider.GetKeyedService<IShippingStrategy>(method);
-    }
+    public IShippingStrategy? Create(ShippingMethod method) =>
+        serviceProvider.GetKeyedService<IShippingStrategy>(method);
 }

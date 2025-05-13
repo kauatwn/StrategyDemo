@@ -11,10 +11,7 @@ public class ShippingStrategyFactoryTests
     private readonly Mock<IKeyedServiceProvider> _mockServiceProvider = new();
     private readonly ShippingStrategyFactory _factory;
 
-    public ShippingStrategyFactoryTests()
-    {
-        _factory = new ShippingStrategyFactory(_mockServiceProvider.Object);
-    }
+    public ShippingStrategyFactoryTests() => _factory = new ShippingStrategyFactory(_mockServiceProvider.Object);
 
     [Theory]
     [InlineData(ShippingMethod.Standard)]

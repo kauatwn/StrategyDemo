@@ -8,21 +8,14 @@ namespace Application.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static void AddApplication(this IServiceCollection services)
     {
         AddContexts(services);
         AddUseCases(services);
-
-        return services;
     }
 
-    private static void AddContexts(IServiceCollection services)
-    {
-        services.AddScoped<IShippingContext, ShippingContext>();
-    }
+    private static void AddContexts(IServiceCollection services) => services.AddScoped<IShippingContext, ShippingContext>();
 
-    private static void AddUseCases(IServiceCollection services)
-    {
+    private static void AddUseCases(IServiceCollection services) =>
         services.AddScoped<ICalculateShippingCostUseCase, CalculateShippingCostUseCase>();
-    }
 }

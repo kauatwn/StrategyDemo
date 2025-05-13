@@ -11,16 +11,13 @@ public class CalculateShippingCostUseCaseTests
     private readonly Mock<IShippingContext> _mockContext = new();
     private readonly CalculateShippingCostUseCase _useCase;
 
-    public CalculateShippingCostUseCaseTests()
-    {
-        _useCase = new CalculateShippingCostUseCase(_mockContext.Object);
-    }
+    public CalculateShippingCostUseCaseTests() => _useCase = new CalculateShippingCostUseCase(_mockContext.Object);
 
     [Fact]
     public void ShouldCalculateShippingCost()
     {
         // Arrange
-        var order = new Order(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+        Order order = new(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
 
         _mockContext.Setup(c => c.SetStrategy(It.IsAny<ShippingMethod>()));
         _mockContext.Setup(c => c.CalculateShippingCost(It.IsAny<Order>()));
