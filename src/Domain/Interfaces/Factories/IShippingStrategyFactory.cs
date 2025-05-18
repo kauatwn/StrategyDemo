@@ -5,5 +5,5 @@ namespace Domain.Interfaces.Factories;
 
 public interface IShippingStrategyFactory
 {
-    IShippingStrategy? Create(ShippingMethod method);
+    IShippingStrategy Create(ShippingMethod method);
 }
