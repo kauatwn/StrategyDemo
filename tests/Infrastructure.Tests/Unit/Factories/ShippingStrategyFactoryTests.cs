@@ -1,17 +1,16 @@
 ﻿using Domain.Enums;
 using Domain.Interfaces.Strategies;
 using Infrastructure.Factories;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace Infrastructure.Tests.Unit.Factories;
 
 public class ShippingStrategyFactoryTests
 {
-    private readonly Mock<IKeyedServiceProvider> _mockServiceProvider = new();
+    private readonly Mock<Func<ShippingMethod, IShippingStrategy>> _mockResolver = new();
     private readonly ShippingStrategyFactory _factory;
 
-    public ShippingStrategyFactoryTests() => _factory = new ShippingStrategyFactory(_mockServiceProvider.Object);
+    public ShippingStrategyFactoryTests() => _factory = new ShippingStrategyFactory(_mockResolver.Object);
 
     [Theory]
     [InlineData(ShippingMethod.Standard)]
@@ -21,34 +20,32 @@ public class ShippingStrategyFactoryTests
         // Arrange
         var expected = Mock.Of<IShippingStrategy>();
 
-        _mockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
-            .Returns(expected);
+        _mockResolver.Setup(r => r(method)).Returns(expected);
 
         // Act
-        IShippingStrategy? result = _factory.Create(method);
+        IShippingStrategy result = _factory.Create(method);
 
         // Assert
         Assert.NotNull(result);
         Assert.Same(expected, result);
 
-        _mockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
+        _mockResolver.Verify(r => r(method), Times.Once);
     }
 
     [Fact]
-    public void ShouldReturnNullWhenInvalidShippingMethodIsProvided()
+    public void ShouldThrowInvalidOperationExceptionWhenInvalidShippingMethodIsProvided()
     {
         // Arrange
         const ShippingMethod method = (ShippingMethod)int.MaxValue;
 
-        _mockServiceProvider.Setup(s => s.GetKeyedService(typeof(IShippingStrategy), method))
-            .Returns((IShippingStrategy?)null);
+        _mockResolver.Setup(r => r(method)).Throws(new InvalidOperationException());
 
         // Act
-        IShippingStrategy? result = _factory.Create(method);
+        Action act = () => _factory.Create(method);
 
         // Assert
-        Assert.Null(result);
+        Assert.Throws<InvalidOperationException>(act);
 
-        _mockServiceProvider.Verify(s => s.GetKeyedService(typeof(IShippingStrategy), method), Times.Once);
+        _mockResolver.Verify(r => r(method), Times.Once);
     }
 }
