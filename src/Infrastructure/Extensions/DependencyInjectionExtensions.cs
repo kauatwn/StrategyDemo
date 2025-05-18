@@ -22,5 +22,6 @@ public static class DependencyInjectionExtensions
     }
 
     private static void AddFactories(IServiceCollection services) =>
-        services.AddSingleton<IShippingStrategyFactory, ShippingStrategyFactory>();
+        services.AddSingleton<IShippingStrategyFactory, ShippingStrategyFactory>(provider =>
+            new ShippingStrategyFactory(method => provider.GetRequiredKeyedService<IShippingStrategy>(method)));
 }
