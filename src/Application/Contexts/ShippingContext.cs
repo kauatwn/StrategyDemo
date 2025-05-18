@@ -10,11 +10,7 @@ public class ShippingContext(IShippingStrategyFactory factory) : IShippingContex
 {
     private IShippingStrategy? _strategy;
 
-    public void SetStrategy(ShippingMethod method)
-    {
-        _strategy = factory.Create(method)
-            ?? throw new InvalidOperationException($"No shipping strategy found for method '{method}'.");
-    }
+    public void SetStrategy(ShippingMethod method) => _strategy = factory.Create(method);
 
     public double CalculateShippingCost(Order order)
     {
