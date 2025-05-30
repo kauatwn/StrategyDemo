@@ -10,13 +10,16 @@ O projeto está organizado da seguinte forma:
 Strategy_Demo/
 ├── src/
 │   ├── API/
-│   │   └── Controllers/
-│   │       └── OrdersControllers.cs
+│   │   ├── Controllers/
+│   │   │   └── OrdersController.cs
+│   │   └── DTOs/
+│   │       └── Responses/
+│   │           └── ShippingCostResponse.cs
 │   ├── Application/
 │   │   ├── Contexts/
 │   │   │   └── ShippingContext.cs
 │   │   ├── DTOs/
-│   │   │   └── ShippingCostResponse.cs
+│   │   │   └── ShippingCostResult.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
 │   ├── Domain/
