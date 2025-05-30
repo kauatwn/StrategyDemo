@@ -7,13 +7,11 @@ namespace Application.UseCases;
 
 public class CalculateShippingCostUseCase(IShippingContext context) : ICalculateShippingCostUseCase
 {
-    public ShippingCostResponse Execute(Order order)
+    public ShippingCostResult Execute(Order order)
     {
         context.SetStrategy(order.ShippingMethod);
-
         double cost = context.CalculateShippingCost(order);
-        var message = $"The {order.ShippingMethod.ToString().ToLower()} shipping cost is {cost:C}";
 
-        return new ShippingCostResponse(message, cost, order.ShippingMethod.ToString());
+        return new ShippingCostResult(cost, order.ShippingMethod.ToString());
     }
 }
