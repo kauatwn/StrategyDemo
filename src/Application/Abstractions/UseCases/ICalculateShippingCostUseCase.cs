@@ -5,5 +5,5 @@ namespace Application.Abstractions.UseCases;
 
 public interface ICalculateShippingCostUseCase
 {
-    ShippingCostResponse Execute(Order order);
+    ShippingCostResult Execute(Order order);
 }
