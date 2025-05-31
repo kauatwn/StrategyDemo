@@ -18,8 +18,6 @@ Strategy_Demo/
 │   ├── Application/
 │   │   ├── Contexts/
 │   │   │   └── ShippingContext.cs
-│   │   ├── DTOs/
-│   │   │   └── ShippingCostResult.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
 │   ├── Domain/
