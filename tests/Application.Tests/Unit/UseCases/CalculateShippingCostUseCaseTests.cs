@@ -17,16 +17,23 @@ public class CalculateShippingCostUseCaseTests
     public void ShouldCalculateShippingCost()
     {
         // Arrange
-        Order order = new(weight: 10, distance: 100, shippingMethod: ShippingMethod.Standard);
+        Order order = new(weight: 10.0, distance: 100.0, shippingMethod: ShippingMethod.Standard);
+        const double expectedCost = 10.0;
 
-        _mockContext.Setup(c => c.SetStrategy(It.IsAny<ShippingMethod>()));
-        _mockContext.Setup(c => c.CalculateShippingCost(It.IsAny<Order>()));
+        _mockContext.Setup(c => c.CalculateShippingCost(order)).Returns(expectedCost);
 
         // Act
-        _useCase.Execute(order);
+        double result = _useCase.Execute(order);
 
         // Assert
-        _mockContext.Verify(c => c.SetStrategy(It.IsAny<ShippingMethod>()), Times.Once);
-        _mockContext.Verify(c => c.CalculateShippingCost(It.IsAny<Order>()), Times.Once);
+        Assert.Equal(expectedCost, result);
+
+        _mockContext.Verify(c => c.SetStrategy(order.ShippingMethod), Times.Once,
+            "O Use Case deve configurar a estratégia correta."
+        );
+
+        _mockContext.Verify(c => c.CalculateShippingCost(order), Times.Once,
+            "O Use Case deve repassar a Order correta para o cálculo."
+        );
     }
 }
