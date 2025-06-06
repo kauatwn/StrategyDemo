@@ -29,7 +29,7 @@ public class ShippingStrategyFactoryTests
         Assert.NotNull(result);
         Assert.Same(expected, result);
 
-        _mockResolver.Verify(r => r(method), Times.Once);
+        _mockResolver.Verify(r => r(method), Times.Once, $"O resolver não foi chamado para {method}");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class ShippingStrategyFactoryTests
         // Arrange
         const ShippingMethod method = (ShippingMethod)int.MaxValue;
 
-        _mockResolver.Setup(r => r(method)).Throws(new InvalidOperationException());
+        _mockResolver.Setup(r => r(method)).Throws<InvalidOperationException>();
 
         // Act
         Action act = () => _factory.Create(method);
@@ -46,6 +46,7 @@ public class ShippingStrategyFactoryTests
         // Assert
         Assert.Throws<InvalidOperationException>(act);
 
-        _mockResolver.Verify(r => r(method), Times.Once);
+        _mockResolver.Verify(r => r(method), Times.Once,
+            $"O resolver deve ser chamado mesmo para métodos inválidos ({method})");
     }
 }
