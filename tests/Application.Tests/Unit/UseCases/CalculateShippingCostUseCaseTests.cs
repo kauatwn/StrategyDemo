@@ -29,11 +29,9 @@ public class CalculateShippingCostUseCaseTests
         Assert.Equal(expectedCost, result);
 
         _mockContext.Verify(c => c.SetStrategy(order.ShippingMethod), Times.Once,
-            "O Use Case deve configurar a estratégia correta."
-        );
+            "O Use Case deve configurar a estratégia correta no contexto.");
 
         _mockContext.Verify(c => c.CalculateShippingCost(order), Times.Once,
-            "O Use Case deve repassar a Order correta para o cálculo."
-        );
+            "O Use Case deve repassar a Order correta para o cálculo no contexto.");
     }
 }
