@@ -48,9 +48,29 @@ public class ShippingContextTests
         Assert.Throws<InvalidOperationException>(act);
 
         _mockFactory.Verify(f => f.Create(It.IsAny<ShippingMethod>()), Times.Never,
-           "A fábrica não deve ser chamada quando a estratégia não foi definida.");
+            "A fábrica não deve ser chamada quando a estratégia não foi definida.");
 
         _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never,
             "A estratégia não deve ser usada quando não foi definida.");
+    }
+
+    [Fact]
+    public void ShouldPropagateExceptionWhenFactoryThrowsDuringSetStrategy()
+    {
+        // Arrange
+        Order order = new(weight: 10.0, distance: 100.0, shippingMethod: ShippingMethod.Standard);
+        InvalidOperationException expected = new();
+
+        _mockFactory.Setup(f => f.Create(order.ShippingMethod)).Throws(expected);
+
+        // Act
+        Action act = () => _context.SetStrategy(order.ShippingMethod);
+
+        // Assert
+        var actual = Assert.Throws<InvalidOperationException>(act);
+        Assert.Same(expected, actual);
+
+        _mockStrategy.Verify(s => s.Calculate(It.IsAny<Order>()), Times.Never,
+            "O método Calculate da estratégia não deve ser chamado se a criação da estratégia falhar.");
     }
 }
