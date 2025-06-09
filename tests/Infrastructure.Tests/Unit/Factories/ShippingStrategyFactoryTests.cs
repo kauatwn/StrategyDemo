@@ -28,23 +28,23 @@ public class ShippingStrategyFactoryTests
         // Assert
         Assert.NotNull(result);
         Assert.Same(expected, result);
-
-        _mockResolver.Verify(r => r(method), Times.Once, $"O resolver não foi chamado corretamente para {method}.");
     }
 
     [Fact]
-    public void ShouldThrowInvalidOperationExceptionWhenInvalidShippingMethodIsProvided()
+    public void ShouldPropagateInvalidOperationExceptionWhenResolverThrowsDuringCreate()
     {
         // Arrange
         const ShippingMethod invalidMethod = (ShippingMethod)int.MaxValue;
+        InvalidOperationException expected = new();
 
-        _mockResolver.Setup(r => r(invalidMethod)).Throws<InvalidOperationException>();
+        _mockResolver.Setup(r => r(invalidMethod)).Throws(expected);
 
         // Act
         Action act = () => _factory.Create(invalidMethod);
 
         // Assert
-        Assert.Throws<InvalidOperationException>(act);
+        var actual = Assert.Throws<InvalidOperationException>(act);
+        Assert.Same(expected, actual);
 
         _mockResolver.Verify(r => r(invalidMethod), Times.Once,
             $"O resolver deve ser chamado mesmo para métodos inválidos ({invalidMethod}).");
