@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
 
-namespace Application.Abstractions.Contexts;
+namespace Application.Interfaces.Contexts;
 
 public interface IShippingContext
 {

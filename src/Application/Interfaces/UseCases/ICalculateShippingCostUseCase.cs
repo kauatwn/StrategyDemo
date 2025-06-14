@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.Abstractions.UseCases;
+namespace Application.Interfaces.UseCases;
 
 public interface ICalculateShippingCostUseCase
 {
