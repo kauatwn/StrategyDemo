@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Contexts;
+﻿using Application.Interfaces.Contexts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces.Factories;

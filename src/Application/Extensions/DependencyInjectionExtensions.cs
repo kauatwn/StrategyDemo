@@ -1,6 +1,6 @@
-﻿using Application.Abstractions.Contexts;
-using Application.Abstractions.UseCases;
-using Application.Contexts;
+﻿using Application.Contexts;
+using Application.Interfaces.Contexts;
+using Application.Interfaces.UseCases;
 using Application.UseCases;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +14,8 @@ public static class DependencyInjectionExtensions
         AddUseCases(services);
     }
 
-    private static void AddContexts(IServiceCollection services) => services.AddScoped<IShippingContext, ShippingContext>();
+    private static void AddContexts(IServiceCollection services) =>
+        services.AddScoped<IShippingContext, ShippingContext>();
 
     private static void AddUseCases(IServiceCollection services) =>
         services.AddScoped<ICalculateShippingCostUseCase, CalculateShippingCostUseCase>();

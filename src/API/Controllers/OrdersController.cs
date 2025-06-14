@@ -1,5 +1,5 @@
 ﻿using API.DTOs.Responses;
-using Application.Abstractions.UseCases;
+using Application.Interfaces.UseCases;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +14,8 @@ public class OrdersController : ControllerBase
     public ActionResult<ShippingCostResponse> CalculateShippingCost(ICalculateShippingCostUseCase useCase, Order order)
     {
         double cost = useCase.Execute(order);
-        ShippingCostResponse response =
-            new($"The {order.ShippingMethod.ToString().ToLower()} shipping cost is {cost:C}", cost,
-                order.ShippingMethod.ToString());
+        var method = order.ShippingMethod.ToString();
+        ShippingCostResponse response = new($"The {method.ToLower()} shipping cost is {cost:C}", cost, method);
 
         return Ok(response);
     }

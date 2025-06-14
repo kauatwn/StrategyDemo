@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Contexts;
-using Application.Abstractions.UseCases;
+﻿using Application.Interfaces.Contexts;
+using Application.Interfaces.UseCases;
 using Domain.Entities;
 
 namespace Application.UseCases;
