@@ -17,7 +17,7 @@ Você pode executar o projeto de duas formas:
 1. **Com Docker** (recomendado para evitar configurações locais)
 2. **Localmente com .NET SDK** (caso já tenha o ambiente .NET configurado)
 
-### 1. Clone o Projeto
+### Clone o Projeto
 
 Clone este repositório em sua máquina local:
 
