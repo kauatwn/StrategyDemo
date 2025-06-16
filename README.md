@@ -12,7 +12,20 @@ Escolha uma das seguintes opções para executar o projeto:
 
 ## Como Executar
 
-### Com Docker
+Você pode executar o projeto de duas formas:
+
+1. **Com Docker** (recomendado para evitar configurações locais)
+2. **Localmente com .NET SDK** (caso já tenha o ambiente .NET configurado)
+
+### 1. Clone o Projeto
+
+Clone este repositório em sua máquina local:
+
+```bash
+git clone https://github.com/kauatwn/Strategy_Demo.git
+```
+
+### Executar com Docker
 
 1. Navegue até a pasta raiz do projeto:
 
@@ -34,7 +47,7 @@ Escolha uma das seguintes opções para executar o projeto:
 
 Após executar os comandos acima, a API estará disponível em `http://localhost:5000`.
 
-### Localmente com .NET SDK
+### Executar Localmente com .NET SDK
 
 1. Navegue até o diretório da API:
 
@@ -57,23 +70,23 @@ O projeto está organizado da seguinte forma:
 ```plaintext
 Strategy_Demo/
 ├── src/
-│   ├── API/
+│   ├── Strategy_Demo.API/
 │   │   ├── Controllers/
 │   │   │   └── OrdersController.cs
 │   │   └── DTOs/
 │   │       └── Responses/
 │   │           └── ShippingCostResponse.cs
-│   ├── Application/
+│   ├── Strategy_Demo.Application/
 │   │   ├── Contexts/
 │   │   │   └── ShippingContext.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
-│   ├── Domain/
+│   ├── Strategy_Demo.Domain/
 │   │   ├── Entities/
 │   │   │   └── Order.cs
 │   │   └── Enums/
 │   │       └── ShippingMethod.cs
-│   └── Infrastructure/
+│   └── Strategy_Demo.Infrastructure/
 │       ├── Factories/
 │       │   └── ShippingStrategyFactory.cs
 │       └── Strategies/
@@ -81,8 +94,8 @@ Strategy_Demo/
 │               ├── ExpressShippingStrategy.cs
 │               └── StandardShippingStrategy.cs
 └── tests/
-    ├── Application.Tests/
-    └── Infrastructure.Tests/
+    ├── Strategy_Demo.Application.Tests/
+    └── Strategy_Demo.Infrastructure.Tests/
 ```
 
 ## Como Funciona
@@ -91,10 +104,10 @@ O padrão Strategy é utilizado para encapsular diferentes algoritmos de cálcul
 
 ### Exemplo de requisição
 
-```http
-POST /api/Orders/CalculateShippingCost
-content-type: application/json
+`POST /api/Orders/CalculateShippingCost`
+Recebe um JSON com os dados do pedido e o método de envio desejado, e retorna o custo do frete calculado.
 
+```json
 {
   "weight": 100.0,
   "distance": 100.0,
