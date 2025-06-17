@@ -55,7 +55,13 @@ Após executar os comandos acima, a API estará disponível em `http://localhost
     cd src/Strategy_Demo.API/
     ```
 
-2. Inicie a aplicação:
+2. Restaure as dependências do projeto:
+
+    ```bash
+    dotnet restore
+    ```
+
+3. Inicie a aplicação:
 
     ```bash
     dotnet run
