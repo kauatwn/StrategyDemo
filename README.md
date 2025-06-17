@@ -2,6 +2,19 @@
 
 Este projeto é uma API que demonstra a aplicação do padrão de design comportamental **Strategy** para calcular o custo de envio com base em diferentes estratégias de envio. A implementação segue os princípios da **Clean Architecture** e **SOLID**, garantindo um código modular, testável e de fácil manutenção.
 
+## Sumário
+
+- [Pré-requisitos](#pré-requisitos)
+- [Como Executar](#como-executar)
+  - [Clone o Projeto](#clone-o-projeto)
+  - [Executar com Docker](#executar-com-docker)
+  - [Executar Localmente com .NET SDK](#executar-localmente-com-net-sdk)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Como Funciona](#como-funciona)
+- [Fluxo Simplificado](#fluxo-simplificado)
+  - [Exemplo de requisição](#exemplo-de-requisição)
+  - [Exemplo de resposta](#exemplo-de-resposta)
+
 ## Pré-requisitos
 
 Escolha uma das seguintes opções para executar o projeto:
@@ -106,12 +119,40 @@ Strategy_Demo/
 
 ## Como Funciona
 
-O padrão Strategy é utilizado para encapsular diferentes algoritmos de cálculo de custo de envio em classes separadas. Dependendo da estratégia escolhida pelo usuário, o sistema seleciona a estratégia apropriada e calcula o custo de envio.
+O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o comportamento mude em tempo de execução. Neste projeto, ele é usado para calcular o custo de envio com base na estratégia escolhida.
+
+1. **IShippingStrategy (Interface)**
+    - Define o contrato `Calculate(Order order)` para todas as estratégias de envio.
+    - Permite que qualquer estratégia concreta seja usada de forma polimórfica.
+
+2. **StandardShippingStrategy (ConcreteStrategy)**
+    - Implementa a estratégia de envio padrão com um custo fixo por peso e distância.
+    - Exemplo: `custo = peso * 1.0 + distância * 0.5`
+
+3. **ExpressShippingStrategy (ConcreteStrategy)**
+    - Estratégia mais cara, porém mais rápida.
+    - Exemplo: `custo = peso * 2.0 + distância * 1.0`
+
+4. **ShippingContext (Contexto)**
+    - Define qual estratégia será usada com base no método de envio informado.
+    - Centraliza a lógica de seleção da estratégia e delega o cálculo à instância apropriada.
+
+5. **ShippingStrategyFactory**
+    - Responsável por criar a estratégia correta a partir de um delegate injetado.
+    - A lógica de resolução por enum (`ShippingMethod`) é fornecida externamente via DI, o que mantém a fábrica simples e flexível.
+
+## Fluxo Simplificado
+
+1. O cliente envia uma requisição com `peso`, `distância` e `shippingMethod`.
+2. O `UseCase` define a estratégia com `SetStrategy`.
+3. O `ShippingContext` calcula o custo usando a estratégia correta.
+4. A API retorna o valor ao cliente.
 
 ### Exemplo de requisição
 
-`POST /api/Orders/CalculateShippingCost`
-Recebe um JSON com os dados do pedido e o método de envio desejado, e retorna o custo do frete calculado.
+```http
+POST /api/Orders/CalculateShippingCost
+```
 
 ```json
 {
