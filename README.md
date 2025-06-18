@@ -55,7 +55,7 @@ git clone https://github.com/kauatwn/Strategy_Demo.git
 3. Execute o container:
 
     ```bash
-    docker run -d -p 5000:8080 --name Strategy_Demo.API strategydemoapi:dev
+    docker run --rm -it -p 5000:8080 --name Strategy_Demo.API strategydemoapi:dev
     ```
 
 Após executar os comandos acima, a API estará disponível em `http://localhost:5000`.
