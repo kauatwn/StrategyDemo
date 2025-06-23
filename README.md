@@ -1,20 +1,14 @@
 # Strategy Demo
 
-Este projeto é uma API que demonstra a aplicação do padrão de design comportamental **Strategy** para calcular o custo de envio com base em diferentes estratégias de envio. A implementação segue os princípios da **Clean Architecture** e **SOLID**, garantindo um código modular, testável e de fácil manutenção.
+Este projeto é uma API que demonstra a aplicação combinada dos padrões de projeto **Strategy** (comportamental) e **Factory Method** (criacional) para calcular o custo de envio com base em diferentes estratégias. A implementação segue os princípios da **Clean Architecture** e do **SOLID**, resultando em um código modular, testável e de fácil manutenção.
 
 ## Sumário
 
 - [Pré-requisitos](#pré-requisitos)
 - [Como Executar](#como-executar)
-  - [Clone o Projeto](#clone-o-projeto)
-  - [Executar com Docker](#executar-com-docker)
-  - [Executar Localmente com .NET SDK](#executar-localmente-com-net-sdk)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Como Funciona](#como-funciona)
 - [Fluxo Simplificado](#fluxo-simplificado)
-  - [Detalhes do fluxo](#detalhes-do-fluxo)
-  - [Exemplo de requisição](#exemplo-de-requisição)
-  - [Exemplo de resposta](#exemplo-de-resposta)
 
 ## Pré-requisitos
 
@@ -120,27 +114,29 @@ StrategyDemo/
 
 ## Como Funciona
 
-O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o comportamento mude em tempo de execução. Neste projeto, ele é usado para calcular o custo de envio com base na estratégia escolhida.
+### Strategy
 
-1. **IShippingStrategy (Interface)**
-    - Define o contrato `Calculate(Order order)` para todas as estratégias de envio.
-    - Permite que qualquer estratégia concreta seja usada de forma polimórfica.
+O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o comportamento mude em tempo de execução. Neste projeto, ele é usado para calcular o custo de envio com base no método escolhido.
 
-2. **StandardShippingStrategy (ConcreteStrategy)**
-    - Implementa a estratégia de envio padrão com um custo fixo por peso e distância.
-    - Exemplo: `custo = peso * 1.0 + distância * 0.5`
+- **IShippingStrategy (Interface)**
+  - Define o contrato `Calculate(Order order)` para todas as estratégias de envio.
+  - Permite que qualquer estratégia concreta seja usada de forma polimórfica.
 
-3. **ExpressShippingStrategy (ConcreteStrategy)**
-    - Estratégia mais cara, porém mais rápida.
-    - Exemplo: `custo = peso * 2.0 + distância * 1.0`
+- **StandardShippingStrategy/ExpressShippingStrategy (Concrete Strategies)**
+  - Cada uma implementa uma fórmula de cálculo diferente com base em peso e distância.
 
-4. **ShippingContext (Contexto)**
-    - Define qual estratégia será usada com base no método de envio informado.
-    - Centraliza a lógica de seleção da estratégia e delega o cálculo à instância apropriada.
+- **ShippingContext (Context)**
+  - Define qual estratégia será usada com base no método de envio informado.
+  - Centraliza a lógica de seleção da estratégia e delega o cálculo à instância apropriada.
 
-5. **ShippingStrategyFactory**
-    - Responsável por criar a estratégia correta a partir de um delegate injetado.
-    - A lógica de resolução por enum (`ShippingMethod`) é fornecida externamente via DI, o que mantém a fábrica simples e flexível.
+### Factory Method
+
+O padrão **Factory Method** é usado para criar dinamicamente a estratégia correta com base no valor do `ShippingMethod`.
+
+- **ShippingStrategyFactory (Factory Method)**
+  - Encapsula a criação de uma instância de `IShippingStrategy`.
+  - Utiliza um delegate injetado (`Func<ShippingMethod, IShippingStrategy>`) resolvido via container de injeção de dependência.
+  - Essa abordagem promove **baixo acoplamento** e **flexibilidade**, respeitando o princípio de **Inversão de Dependência (DIP)**.
 
 ## Fluxo Simplificado
 
@@ -167,7 +163,7 @@ O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o c
     else Express
         Factory-->>Context: ExpressStrategy
     end
-    Context-->>-UseCase: Retorna estratégia
+    Context-->>-UseCase: Estratégia selecionada
     
     UseCase->>+Context: Calculate(order)
     Context->>+Strategy: Calculate(order)
@@ -182,19 +178,16 @@ O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o c
 ### Detalhes do Fluxo
 
 1. Requisição do Cliente:
-    - O cliente envia os dados do pedido (peso, distância e método de envio)
+    - O cliente envia os dados do pedido (peso, distância e método de envio).
 
 2. Seleção da Estratégia:
-    - A factory cria a estratégia específica (Standard ou Express)
-    - O contexto armazena a estratégia selecionada
+    - A factory cria dinamicamente a estratégia (Standard ou Express) com base no método informado.
 
 3. Cálculo do Custo:
-    - A estratégia aplica sua fórmula específica de cálculo
-    - O resultado é retornado através do contexto
+    - A estratégia aplica sua fórmula específica. O resultado é retornado.
 
 4. Resposta:
-    - A API formata a resposta com o custo calculado
-    - Inclui mensagem descritiva e método utilizado
+    - A API retorna o custo calculado com uma mensagem informativa.
 
 ### Exemplo de requisição
 
