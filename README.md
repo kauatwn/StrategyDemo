@@ -131,11 +131,14 @@ O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o c
 
 ### Factory Method
 
-O padrão **Factory Method** é usado para criar dinamicamente a estratégia correta com base no valor do `ShippingMethod`.
+O padrão **Factory Method** é usado para delegar a lógica de criação de objetos a uma estrutura especializada, permitindo instanciar dinamicamente a estratégia correta com base no `ShippingMethod`.
 
-- **ShippingStrategyFactory (Factory Method)**
-  - Encapsula a criação de uma instância de `IShippingStrategy`.
-  - Utiliza um delegate injetado (`Func<ShippingMethod, IShippingStrategy>`) resolvido via container de injeção de dependência.
+- **IShippingStrategyFactory (Creator)**
+  - Define o contrato do método `Create`, responsável por abstrair a criação de estratégias de envio.
+
+- **ShippingStrategyFactory (Concrete Creator)**
+  - Implementa o método `Create`, delegando a criação a um delegate injetado (`Func<ShippingMethod, IShippingStrategy>`).
+  - Utiliza o container de injeção de dependência para resolver a instância correta.
   - Essa abordagem promove **baixo acoplamento** e **flexibilidade**, respeitando o princípio de **Inversão de Dependência (DIP)**.
 
 ## Fluxo Simplificado
