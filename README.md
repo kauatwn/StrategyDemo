@@ -12,6 +12,7 @@ Este projeto é uma API que demonstra a aplicação do padrão de design comport
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Como Funciona](#como-funciona)
 - [Fluxo Simplificado](#fluxo-simplificado)
+  - [Detalhes do fluxo](#detalhes-do-fluxo)
   - [Exemplo de requisição](#exemplo-de-requisição)
   - [Exemplo de resposta](#exemplo-de-resposta)
 
@@ -35,7 +36,7 @@ Você pode executar o projeto de duas formas:
 Clone este repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/kauatwn/Strategy_Demo.git
+git clone https://github.com/kauatwn/StrategyDemo.git
 ```
 
 ### Executar com Docker
@@ -43,19 +44,19 @@ git clone https://github.com/kauatwn/Strategy_Demo.git
 1. Navegue até a pasta raiz do projeto:
 
     ```bash
-    cd Strategy_Demo/
+    cd StrategyDemo/
     ```
 
 2. Construa a imagem Docker:
 
     ```bash
-    docker build -t strategydemoapi:dev -f src/Strategy_Demo.API/Dockerfile .
+    docker build -t strategydemoapi:dev -f src/StrategyDemo.API/Dockerfile .
     ```
 
 3. Execute o container:
 
     ```bash
-    docker run --rm -it -p 5000:8080 --name Strategy_Demo.API strategydemoapi:dev
+    docker run --rm -it -p 5000:8080 --name StrategyDemo.API strategydemoapi:dev
     ```
 
 Após executar os comandos acima, a API estará disponível em `http://localhost:5000`.
@@ -65,7 +66,7 @@ Após executar os comandos acima, a API estará disponível em `http://localhost
 1. Navegue até o diretório da API:
 
     ```bash
-    cd src/Strategy_Demo.API/
+    cd src/StrategyDemo.API/
     ```
 
 2. Restaure as dependências do projeto:
@@ -87,25 +88,25 @@ Após rodar a aplicação, a API ficará acessível em `http://localhost:5197`.
 O projeto está organizado da seguinte forma:
 
 ```plaintext
-Strategy_Demo/
+StrategyDemo/
 ├── src/
-│   ├── Strategy_Demo.API/
+│   ├── StrategyDemo.API/
 │   │   ├── Controllers/
 │   │   │   └── OrdersController.cs
 │   │   └── DTOs/
 │   │       └── Responses/
 │   │           └── ShippingCostResponse.cs
-│   ├── Strategy_Demo.Application/
+│   ├── StrategyDemo.Application/
 │   │   ├── Contexts/
 │   │   │   └── ShippingContext.cs
 │   │   └── UseCases/
 │   │       └── CalculateShippingCostUseCase.cs
-│   ├── Strategy_Demo.Domain/
+│   ├── StrategyDemo.Domain/
 │   │   ├── Entities/
 │   │   │   └── Order.cs
 │   │   └── Enums/
 │   │       └── ShippingMethod.cs
-│   └── Strategy_Demo.Infrastructure/
+│   └── StrategyDemo.Infrastructure/
 │       ├── Factories/
 │       │   └── ShippingStrategyFactory.cs
 │       └── Strategies/
@@ -113,8 +114,8 @@ Strategy_Demo/
 │               ├── ExpressShippingStrategy.cs
 │               └── StandardShippingStrategy.cs
 └── tests/
-    ├── Strategy_Demo.Application.Tests/
-    └── Strategy_Demo.Infrastructure.Tests/
+    ├── StrategyDemo.Application.Tests/
+    └── StrategyDemo.Infrastructure.Tests/
 ```
 
 ## Como Funciona
@@ -143,10 +144,57 @@ O padrão **Strategy** encapsula algoritmos intercambiáveis, permitindo que o c
 
 ## Fluxo Simplificado
 
-1. O cliente envia uma requisição com `peso`, `distância` e `shippingMethod`.
-2. O `UseCase` define a estratégia com `SetStrategy`.
-3. O `ShippingContext` calcula o custo usando a estratégia correta.
-4. A API retorna o valor ao cliente.
+1. Cálculo do Custo de Envio:
+
+  ```mermaid
+  sequenceDiagram
+    participant Client
+    participant API as OrdersController
+    participant UseCase as CalculateShippingCostUseCase
+    participant Context as ShippingContext
+    participant Factory as ShippingStrategyFactory
+    participant Strategy as IShippingStrategy
+
+    Client->>+API: POST /api/Orders/CalculateShippingCost
+    Note right of API: Order: {weight, distance,<br/>shippingMethod}
+    
+    API->>+UseCase: Execute(order)
+    
+    UseCase->>+Context: SetStrategy(method)
+    Context->>+Factory: Create(method)
+    alt Standard
+        Factory-->>Context: StandardStrategy
+    else Express
+        Factory-->>Context: ExpressStrategy
+    end
+    Context-->>-UseCase: Retorna estratégia
+    
+    UseCase->>+Context: Calculate(order)
+    Context->>+Strategy: Calculate(order)
+    Strategy-->>-Context: Custo calculado
+    Context-->>-UseCase: Resultado
+    
+    UseCase-->>-API: Retorna custo
+    API-->>-Client: 200 OK
+    Note left of Client: {message, cost,<br/>shippingMethod}
+  ```
+
+### Detalhes do Fluxo
+
+1. Requisição do Cliente:
+    - O cliente envia os dados do pedido (peso, distância e método de envio)
+
+2. Seleção da Estratégia:
+    - A factory cria a estratégia específica (Standard ou Express)
+    - O contexto armazena a estratégia selecionada
+
+3. Cálculo do Custo:
+    - A estratégia aplica sua fórmula específica de cálculo
+    - O resultado é retornado através do contexto
+
+4. Resposta:
+    - A API formata a resposta com o custo calculado
+    - Inclui mensagem descritiva e método utilizado
 
 ### Exemplo de requisição
 
