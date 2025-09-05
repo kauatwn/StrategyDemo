@@ -1,14 +1,14 @@
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using StrategyDemo.API.DTOs.Requests;
 using StrategyDemo.API.DTOs.Responses;
 using StrategyDemo.Domain.Enums;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace StrategyDemo.API.Tests.Functional;
 
-public class OrdersControllerFunctionalTests(WebApplicationFactory<Program> factory)
+public class OrdersControllerTests(WebApplicationFactory<Program> factory)
     : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly JsonSerializerOptions _jsonOptions = new();
