@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyDemo.Application.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyDemo.Infrastructure.Tests", "tests\StrategyDemo.Infrastructure.Tests\StrategyDemo.Infrastructure.Tests.csproj", "{7725FF3A-AF60-4A17-BE9E-589C2CF42FD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyDemo.API.Tests", "tests\StrategyDemo.API.Tests\StrategyDemo.API.Tests.csproj", "{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{7725FF3A-AF60-4A17-BE9E-589C2CF42FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7725FF3A-AF60-4A17-BE9E-589C2CF42FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7725FF3A-AF60-4A17-BE9E-589C2CF42FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +66,6 @@ Global
 		{7C931951-E3B4-4209-AF18-DCA96A67BDCD} = {1739F8B0-156A-49DF-BC43-BCC68E479A13}
 		{54622DB8-EE55-48A7-9F9A-53E6130AACF9} = {210B779B-DA0F-4CF3-934B-EC89C6C1DE3B}
 		{7725FF3A-AF60-4A17-BE9E-589C2CF42FD7} = {210B779B-DA0F-4CF3-934B-EC89C6C1DE3B}
+		{EC5A4E4D-4BD2-4D7D-8D76-6C95B9E6BFF7} = {210B779B-DA0F-4CF3-934B-EC89C6C1DE3B}
 	EndGlobalSection
 EndGlobal
