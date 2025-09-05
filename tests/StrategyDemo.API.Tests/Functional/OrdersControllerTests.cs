@@ -5,13 +5,18 @@ using StrategyDemo.Domain.Enums;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StrategyDemo.API.Tests.Functional;
 
 public class OrdersControllerTests(WebApplicationFactory<Program> factory)
     : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly JsonSerializerOptions _jsonOptions = new();
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters = { new JsonStringEnumConverter() }
+    };
 
     [Theory]
     [InlineData(10.0, 100.0, ShippingMethod.Standard, 60.0)]
@@ -24,7 +29,7 @@ public class OrdersControllerTests(WebApplicationFactory<Program> factory)
         CalculateShippingCostRequest request = new(weight, distance, shippingMethod);
 
         // Act
-        HttpResponseMessage response = await client.PostAsJsonAsync("/api/Orders/CalculateShippingCost", request);
+        HttpResponseMessage response = await client.PostAsJsonAsync("/api/Orders/CalculateShippingCost", request, _jsonOptions);
 
         // Assert
         response.EnsureSuccessStatusCode();
