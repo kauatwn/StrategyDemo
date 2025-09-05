@@ -6,7 +6,7 @@ using StrategyDemo.Application.Interfaces.Contexts;
 
 namespace StrategyDemo.Application.Contexts;
 
-public class ShippingContext(IShippingStrategyFactory factory) : IShippingContext
+public sealed class ShippingContext(IShippingStrategyFactory factory) : IShippingContext
 {
     private IShippingStrategy? _strategy;
 
@@ -14,9 +14,7 @@ public class ShippingContext(IShippingStrategyFactory factory) : IShippingContex
 
     public double CalculateShippingCost(Order order)
     {
-        if (_strategy is null)
-            throw new InvalidOperationException("Shipping strategy not set. Call SetStrategy first.");
-
-        return _strategy.Calculate(order);
+        return _strategy?.Calculate(order) ??
+               throw new InvalidOperationException("Shipping strategy not set. Call SetStrategy first.");
     }
 }

@@ -7,7 +7,7 @@ namespace StrategyDemo.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrdersController : ControllerBase
+public sealed class OrdersController : ControllerBase
 {
     [HttpPost("CalculateShippingCost")]
     [ProducesResponseType<ShippingCostResponse>(StatusCodes.Status200OK)]

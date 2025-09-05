@@ -3,7 +3,7 @@ using StrategyDemo.Domain.Interfaces.Strategies;
 
 namespace StrategyDemo.Infrastructure.Strategies.Shipping;
 
-public class ExpressShippingStrategy : IShippingStrategy
+public sealed class ExpressShippingStrategy : IShippingStrategy
 {
     private const double CostPerKg = 2.0;
     private const double CostPerKm = 1.0;
